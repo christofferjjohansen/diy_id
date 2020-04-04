@@ -1,7 +1,13 @@
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
+const bodyParser = require("body-parser");
+const api = require("./api");
+
 const app = express()
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/api", api);
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')

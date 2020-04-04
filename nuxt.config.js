@@ -61,9 +61,9 @@ module.exports = {
     theme: {
       themes: {
         light: {
-          primary: colors.blue.base,
+          primary: colors.pink.base,
           secondary: colors.indigo.base,
-          accent: colors.pink.base,
+          accent: colors.blue.base,
           error: colors.red.base,
           warning: colors.amber.base,
           info: colors.purple.base,
