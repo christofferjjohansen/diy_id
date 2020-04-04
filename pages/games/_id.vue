@@ -11,7 +11,7 @@
       <div class="loaded" v-if="loaded">
         <form class="form" @submit.prevent="submit">
           <div class="team-name">
-            <h2>Team</h2>
+            <h2>Team name</h2>
 
             <v-text-field
               label="Name"
@@ -38,12 +38,12 @@
               Submissions
             </h2>
 
-            <template v-for="(s, i) in game.number_of_photos">
+            <template v-for="(s, i) in game.subjects">
               <div :key="i">
-                <h3>#{{i+1}}</h3>
+                <h3 class="mb-4 font-weight-light">#{{i+1}}: {{s}}</h3>
 
                 <v-file-input
-                  label="Upload image" 
+                  :label="`Upload image with subject: ${s}`" 
                   outlined
                   color="secondary"
                   v-model="form[`submission_${i+1}`].image"
@@ -117,9 +117,9 @@ export default {
   },  
 
   methods: {
-    createFormObject({ number_of_photos }) {
+    createFormObject({ subjects }) {
       const form = { name: null }
-      for (let i = 1; i <= number_of_photos; i++) { form[`submission_${i}`] = { image: null, note: null } }
+      for (let i = 1; i <= subjects.length; i++) { form[`submission_${i}`] = { image: null, note: null } }
       return form
     },
 
@@ -168,7 +168,6 @@ export default {
     .categories__chips {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 11px;
       margin-bottom: 11px;
 
       .categories__chips__chip {

@@ -42,21 +42,6 @@
           </div>
         </div>
 
-        <div>
-          <h3>Number of photos: {{form.numberOfPhotos}}</h3>
-
-
-          <v-slider
-            v-model="form.numberOfPhotos"
-            min="1"
-            max="5"
-            :thumb-size="20"
-            outlined
-            color="secondary"
-          />
-
-        </div>
-
         <div class="selection">
           <div class="selection__header">
             <h3>
@@ -135,7 +120,6 @@ export default {
   data() {
     return {
       form: {
-        numberOfPhotos: 3,
         subjects: [],
         categories: []
       },
@@ -164,7 +148,6 @@ export default {
   methods: {
     clear() {
       this.form = {
-        numberOfPhotos: 3,
         subjects: [],
         categories: []
       }

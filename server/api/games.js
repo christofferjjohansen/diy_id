@@ -23,17 +23,17 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { name, instructions, categories, numberOfPhotos, } = req.body
+  const { name, instructions, subjects, categories } = req.body
   
   try {
     const resp = await db.query(`
       insert into games
-        (name, instructions, categories, number_of_photos)
+        (name, instructions, subjects, categories, submissions_start_at, submissions_end_at)
       values 
-        (:name, :instructions, ARRAY[:categories], :numberOfPhotos)
+        (:name, :instructions, ARRAY[:subjects], ARRAY[:categories], now(), now() + INTERVAL '24 hours')
       returning *;
     `, {
-      replacements: { name, instructions, categories, numberOfPhotos }
+      replacements: { name, instructions, subjects, categories }
     })
     
     res.send(resp)

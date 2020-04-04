@@ -3,35 +3,46 @@
     <top-header title="Join games" />
 
     <div class="page-content">
-      <div class="games">
-        <template v-if="games">
-          <v-card class="games__card" v-for="game in games" :key="game.id">
-            <v-card-title>{{game.name}}</v-card-title>
+      <div class="games" v-if="loaded && games.length > 0">
+        <v-card class="games__card" v-for="game in games" :key="game.id">
+          <v-card-title>{{game.name}}</v-card-title>
 
-            <v-card-subtitle class="pb-0">{{game.starts_at || 'No start date'}} - {{game.ends_at || 'No end date'}}</v-card-subtitle>
+          <v-card-subtitle class="pb-0">
+            {{game.submissions_start_at || 'No start date'}} - {{game.submissions_end_at || 'No end date'}}
+          </v-card-subtitle>
 
-            <v-card-text class="text--primary">
-              <div class="games__categories__chips">
-                <template v-for="c in game.categories">
-                  <v-chip :key="c" class="games__categories__chips__chip" color="secondary">
-                    {{c}}
-                  </v-chip>
-                </template>
-              </div>
-            </v-card-text>
+          <v-card-text class="text--primary">
+            <div class="games__categories__chips">
+              <template v-for="c in game.subjects">
+                <v-chip :key="c" class="games__categories__chips__chip" color="primary">
+                  {{c}}
+                </v-chip>
+              </template>
+            </div>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
+            <div class="games__categories__chips">
+              <template v-for="c in game.categories">
+                <v-chip :key="c" class="games__categories__chips__chip" color="secondary">
+                  {{c}}
+                </v-chip>
+              </template>
+            </div>
+          </v-card-text>
 
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <template v-if="isActiveGame(game.submissions_start_at, game.submissions_end_at)">
               <v-btn color="primary" nuxt :to="`/games/${game.id}`">Join</v-btn>
-            </v-card-actions>
-          </v-card>
-        </template>
+            </template>
+          </v-card-actions>
+        </v-card>
+      </div>
+
+      <div v-else>
+        <h2>No active games</h2>
       </div>
     </div>
-    <pre>
-      {{games}}  
-    </pre>
   </div>
 </template>
 
@@ -45,11 +56,25 @@ export default {
     };
   },
 
+  computed: {
+    loaded() {
+      return this.games
+    },
+  },
+
   async created() {
     try {
       const { data } = await this.$axios.get("http://localhost:3000/api/games");
       this.games = data;
     } catch (error) {}
+  },
+
+  methods: {
+    isActiveGame(start, end) {
+      const current = new Date().toISOString()
+      debugger
+      return start < current && current < end
+    }
   },
 
   components: {
